@@ -5,36 +5,121 @@
 #
 
 # Name of this project
-name : Terraform Module Template
+name : Terraform DigitalOcean Load Balancer
 
 # License of this project
 license: "APACHE"
 
 # Canonical GitHub repo
-github_repo: clouddrove/terraform-module-template
+github_repo: terraform-do-modules/terraform-digitalocean-load-balancer
 
 # Badges to display
 badges:
-  - name: "Latest Release"
-    image: "https://img.shields.io/github/release/clouddrove/terraform-module-template.svg"
-    url: "https://github.com/clouddrove/terraform-module-template/releases/latest"
-  - name: "tfsec"
-    image: "https://github.com/clouddrove/terraform-module-template/actions/workflows/tfsec.yml/badge.svg"
-    url: ""
+  - name: "Terraform"
+    image: "https://img.shields.io/badge/Terraform-v0.15-green"
+    url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-APACHE-blue.svg"
     url: "LICENSE.md"
 
 #  description of this project
 description: |-
-  Terraform module template to create new modules using this as baseline
+  Provides a DigitalOcean Load Balancer resource that allows you to manage certificates.
+
 # extra content
 include:
   - "terraform.md"
 
 # How to use this project
-# How to use this project
-usage: |-
-  Here are some examples of how you can use this module in your inventory structure:
+usage : |-
+  Here are examples of how you can use this module in your inventory structure:
+  ### basic example
   ```hcl
-    ```
+      module "load-balancer" {
+      source             = "terraform-do-modules/load-balancer/digitalocean"
+      version            = "0.15.0"
+      name               = local.name
+      environment        = local.environment
+      region             = local.region
+      vpc_uuid           = module.vpc.id
+      droplet_ids        = module.droplet.id
+
+      ######
+      enabled_redirect_http_to_https = false
+      forwarding_rule = [
+        {
+          entry_port     = 80
+          entry_protocol = "http"
+
+          target_port     = 80
+          target_protocol = "http"
+        },
+        {
+          entry_port     = 443
+          entry_protocol = "https"
+
+          target_port      = 80
+          target_protocol  = "http"
+          certificate_name = "demo"
+        }
+      ]
+
+    }
+  ```
+  ### complete example
+  ```hcl
+      module "load-balancer" {
+      source                   = "terraform-do-modules/load-balancer/digitalocean"
+      version                  = "0.15.0"
+      name                     = local.name
+      environment              = local.environment
+      region                   = local.region
+      vpc_uuid                 = module.vpc.id
+      droplet_ids              = module.droplet.id
+
+      ######
+      enabled_redirect_http_to_https = false
+      forwarding_rule = [
+        {
+          entry_port     = 80
+          entry_protocol = "http"
+
+          target_port     = 80
+          target_protocol = "http"
+        },
+        {
+          entry_port     = 443
+          entry_protocol = "https"
+
+          target_port      = 80
+          target_protocol  = "http"
+          certificate_name = "demo"
+        }
+      ]
+
+      healthcheck = [
+        {
+          port     = 80
+          protocol = "http"
+
+          check_interval_seconds   = 10
+          response_timeout_seconds = 5
+          unhealthy_threshold      = 3
+          healthy_threshold        = 5
+        }
+      ]
+      sticky_sessions = [
+        {
+          type               = "cookies"
+          cookie_name        = "lb-cookie"
+          cookie_ttl_seconds = 300
+        }
+      ]
+
+      firewall = [
+        {
+          deny  = ["cidr:0.0.0.0/0"]
+          allow = ["cidr:143.244.136.144/32"]
+      }]
+    }
+  ```
