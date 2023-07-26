@@ -24,7 +24,7 @@ badges:
 
 #  description of this project
 description: |-
-  Provides a DigitalOcean Load Balancer resource that allows you to manage certificates.
+  Provides a DigitalOcean Load Balancer resource that allows you to manage Load between droplets.
 
 # extra content
 include:
@@ -37,7 +37,7 @@ usage : |-
   ```hcl
       module "load-balancer" {
       source             = "terraform-do-modules/load-balancer/digitalocean"
-      version            = "0.15.0"
+      version            = "1.0.0"
       name               = local.name
       environment        = local.environment
       region             = local.region
@@ -50,27 +50,24 @@ usage : |-
         {
           entry_port     = 80
           entry_protocol = "http"
-
           target_port     = 80
           target_protocol = "http"
         },
         {
           entry_port     = 443
           entry_protocol = "https"
-
           target_port      = 80
           target_protocol  = "http"
           certificate_name = "demo"
         }
       ]
-
     }
   ```
   ### complete example
   ```hcl
       module "load-balancer" {
       source                   = "terraform-do-modules/load-balancer/digitalocean"
-      version                  = "0.15.0"
+      version                  = "1.0.0"
       name                     = local.name
       environment              = local.environment
       region                   = local.region
@@ -83,14 +80,12 @@ usage : |-
         {
           entry_port     = 80
           entry_protocol = "http"
-
           target_port     = 80
           target_protocol = "http"
         },
         {
           entry_port     = 443
           entry_protocol = "https"
-
           target_port      = 80
           target_protocol  = "http"
           certificate_name = "demo"
@@ -101,7 +96,6 @@ usage : |-
         {
           port     = 80
           protocol = "http"
-
           check_interval_seconds   = 10
           response_timeout_seconds = 5
           unhealthy_threshold      = 3
@@ -120,6 +114,7 @@ usage : |-
         {
           deny  = ["cidr:0.0.0.0/0"]
           allow = ["cidr:143.244.136.144/32"]
-      }]
+        }
+      ]
     }
   ```

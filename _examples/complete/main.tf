@@ -10,7 +10,8 @@ locals {
 ## VPC module call
 ##------------------------------------------------
 module "vpc" {
-  source      = "git::https://github.com/terraform-do-modules/terraform-digitalocean-vpc.git?ref=internal-423"
+  source      = "terraform-do-modules/vpc/digitalocean"
+  version     = "1.0.0"
   name        = local.name
   environment = local.environment
   region      = local.region
@@ -21,7 +22,8 @@ module "vpc" {
 ## Droplet module call
 ##------------------------------------------------
 module "droplet" {
-  source        = "git::https://github.com/terraform-do-modules/terraform-digitalocean-droplet.git?ref=internal-425"
+  source        = "terraform-do-modules/droplet/digitalocean"
+  version       = "1.0.0"
   droplet_count = 2
   name          = local.name
   environment   = local.environment
@@ -52,21 +54,18 @@ module "load-balancer" {
   region      = local.region
   vpc_uuid    = module.vpc.id
   droplet_ids = module.droplet.id
-
   ######
   enabled_redirect_http_to_https = false
   forwarding_rule = [
     {
-      entry_port     = 80
-      entry_protocol = "http"
-
+      entry_port      = 80
+      entry_protocol  = "http"
       target_port     = 80
       target_protocol = "http"
     },
     {
-      entry_port     = 443
-      entry_protocol = "https"
-
+      entry_port       = 443
+      entry_protocol   = "https"
       target_port      = 80
       target_protocol  = "http"
       certificate_name = "demo"
@@ -75,9 +74,8 @@ module "load-balancer" {
 
   healthcheck = [
     {
-      port     = 80
-      protocol = "http"
-
+      port                     = 80
+      protocol                 = "http"
       check_interval_seconds   = 10
       response_timeout_seconds = 5
       unhealthy_threshold      = 3
@@ -96,6 +94,7 @@ module "load-balancer" {
     {
       deny  = ["cidr:0.0.0.0/0"]
       allow = ["cidr:143.244.136.144/32"]
-  }]
+    }
+  ]
 }
 

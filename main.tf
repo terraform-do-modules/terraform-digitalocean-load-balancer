@@ -2,7 +2,8 @@
 ## Labels module callled that will be used for naming and tags.
 ##-----------------------------------------------------------------------------
 module "labels" {
-  source      = "git::https://github.com/terraform-do-modules/terraform-digitalocean-labels.git?ref=internal-426m"
+  source      = "terraform-do-modules/labels/digitalocean"
+  version     = "1.0.0"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
@@ -14,14 +15,12 @@ module "labels" {
 ##---------------------------------------------------------------------------------------------------------------
 #tfsec:ignore:digitalocean-compute-enforce-https ##  For testing we are used http entry_protocol 80, do not use in prod env.
 resource "digitalocean_loadbalancer" "main" {
-  count     = var.enabled ? 1 : 0
-  name      = format("%s-lb", module.labels.id)
-  region    = var.region
-  size      = var.lb_size
-  size_unit = var.size_unit
-
-  algorithm = var.algorithm
-
+  count                            = var.enabled ? 1 : 0
+  name                             = format("%s-lb", module.labels.id)
+  region                           = var.region
+  size                             = var.lb_size
+  size_unit                        = var.size_unit
+  algorithm                        = var.algorithm
   redirect_http_to_https           = var.enabled_redirect_http_to_https
   enable_proxy_protocol            = var.enable_proxy_protocol
   enable_backend_keepalive         = var.enable_backend_keepalive
@@ -43,9 +42,8 @@ resource "digitalocean_loadbalancer" "main" {
   dynamic "forwarding_rule" {
     for_each = var.forwarding_rule
     content {
-      entry_port     = forwarding_rule.value.entry_port
-      entry_protocol = forwarding_rule.value.entry_protocol
-
+      entry_port       = forwarding_rule.value.entry_port
+      entry_protocol   = forwarding_rule.value.entry_protocol
       target_port      = forwarding_rule.value.target_port
       target_protocol  = forwarding_rule.value.target_protocol
       certificate_name = lookup(forwarding_rule.value, "certificate_name", null)
@@ -56,9 +54,8 @@ resource "digitalocean_loadbalancer" "main" {
   dynamic "healthcheck" {
     for_each = var.healthcheck
     content {
-      port     = healthcheck.value.port
-      protocol = healthcheck.value.protocol
-
+      port                     = healthcheck.value.port
+      protocol                 = healthcheck.value.protocol
       path                     = healthcheck.value.protocol == "tcp" ? null : lookup(healthcheck.value, "path", "/")
       check_interval_seconds   = healthcheck.value.check_interval_seconds
       response_timeout_seconds = healthcheck.value.response_timeout_seconds
@@ -75,5 +72,4 @@ resource "digitalocean_loadbalancer" "main" {
       cookie_ttl_seconds = lookup(sticky_sessions.value, "cookie_ttl_seconds", null)
     }
   }
-
 }
