@@ -5,11 +5,17 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
-  tf-checks-complete-example:
+  complete-example:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.4.0
     with:
       working_directory: './_examples/complete/'
-  tf-checks-basic-example:
+  basic-example:
     uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@1.4.0
     with:
       working_directory: './_examples/basic/'
+
+# Seperate Job for TFlint workflow call
+  tf-lint:
+    uses: clouddrove/github-shared-workflows/.github/workflows/tf-lint.yml@master
+    secrets:
+      GITHUB: ${{ secrets.GITHUB }}
