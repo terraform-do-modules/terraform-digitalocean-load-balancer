@@ -20,7 +20,6 @@ resource "digitalocean_loadbalancer" "main" {
   region                           = var.region
   size                             = var.lb_size
   size_unit                        = var.size_unit
-  algorithm                        = var.algorithm
   redirect_http_to_https           = var.enabled_redirect_http_to_https
   enable_proxy_protocol            = var.enable_proxy_protocol
   enable_backend_keepalive         = var.enable_backend_keepalive

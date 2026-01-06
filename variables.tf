@@ -42,12 +42,6 @@ variable "size_unit" {
   description = "The size of the Load Balancer. It must be in the range (1, 100). Defaults to 1. Only one of size or size_unit may be provided."
 }
 
-variable "algorithm" {
-  type        = string
-  default     = "round_robin"
-  description = "The load balancing algorithm used to determine which backend Droplet will be selected by a client. It must be either round_robin or least_connections. The default value is round_robin."
-}
-
 variable "enabled_redirect_http_to_https" {
   type        = bool
   default     = false
