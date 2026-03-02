@@ -23,7 +23,7 @@ module "vpc" {
 ##------------------------------------------------
 module "droplet" {
   source        = "terraform-do-modules/droplet/digitalocean"
-  version       = "1.0.4"
+  version       = "1.0.5"
   droplet_count = 2
   name          = local.name
   environment   = local.environment
