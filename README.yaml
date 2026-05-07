@@ -17,6 +17,10 @@ badges:
     image: "https://img.shields.io/badge/Terraform-v1.6-green"
     url: "https://www.terraform.io"
 
+  - name: "OpenTofu"
+    image: "https://img.shields.io/badge/OpenTofu-v1.6-purple"
+    url: "https://opentofu.org"
+  
   - name: "Licence"
     image: "https://img.shields.io/badge/License-APACHE-blue.svg"
     url: "LICENSE.md"
