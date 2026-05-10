@@ -171,3 +171,64 @@ At [CloudDrove][website], has extensive experience in designing, building & migr
   [twitter]: https://twitter.com/clouddrove/
   [email]: https://clouddrove.com/contact-us.html
   [terraform_modules]: https://github.com/clouddrove?utf8=%E2%9C%93&q=terraform-&type=&language=
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10.0 |
+| <a name="requirement_digitalocean"></a> [digitalocean](#requirement\_digitalocean) | >= 2.85.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | >= 2.85.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_labels"></a> [labels](#module\_labels) | terraform-do-modules/labels/digitalocean | 1.0.6 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [digitalocean_loadbalancer.main](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/loadbalancer) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_disable_lets_encrypt_dns_records"></a> [disable\_lets\_encrypt\_dns\_records](#input\_disable\_lets\_encrypt\_dns\_records) | A boolean value indicating whether to disable automatic DNS record creation for Let's Encrypt certificates that are added to the load balancer. Default value is false. | `bool` | `false` | no |
+| <a name="input_droplet_ids"></a> [droplet\_ids](#input\_droplet\_ids) | A list of the IDs of each droplet to be attached to the Load Balancer. | `list(string)` | `[]` | no |
+| <a name="input_droplet_tag"></a> [droplet\_tag](#input\_droplet\_tag) | The name of a Droplet tag corresponding to Droplets to be assigned to the Load Balancer. | `string` | `null` | no |
+| <a name="input_enable_backend_keepalive"></a> [enable\_backend\_keepalive](#input\_enable\_backend\_keepalive) | A boolean value indicating whether HTTP keepalive connections are maintained to target Droplets. Default value is false. | `bool` | `false` | no |
+| <a name="input_enable_proxy_protocol"></a> [enable\_proxy\_protocol](#input\_enable\_proxy\_protocol) | A boolean value indicating whether PROXY Protocol should be used to pass information from connecting client requests to the backend service. Default value is false. | `bool` | `false` | no |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Whether to create the resources. Set to `false` to prevent the module from creating any resources. | `bool` | `true` | no |
+| <a name="input_enabled_redirect_http_to_https"></a> [enabled\_redirect\_http\_to\_https](#input\_enabled\_redirect\_http\_to\_https) | A boolean value indicating whether HTTP requests to the Load Balancer on port 80 will be redirected to HTTPS on port 443. Default value is false. | `bool` | `false` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
+| <a name="input_firewall"></a> [firewall](#input\_firewall) | List of objects that represent the configuration of each healthcheck. | `list(any)` | `[]` | no |
+| <a name="input_forwarding_rule"></a> [forwarding\_rule](#input\_forwarding\_rule) | List of objects that represent the configuration of each forwarding\_rule. | `list(any)` | `[]` | no |
+| <a name="input_healthcheck"></a> [healthcheck](#input\_healthcheck) | List of objects that represent the configuration of each healthcheck. | `list(any)` | `[]` | no |
+| <a name="input_http_idle_timeout_seconds"></a> [http\_idle\_timeout\_seconds](#input\_http\_idle\_timeout\_seconds) | Specifies the idle timeout for HTTPS connections on the load balancer in seconds. | `number` | `null` | no |
+| <a name="input_label_order"></a> [label\_order](#input\_label\_order) | Label order, e.g. `name`,`application`. | `list(any)` | <pre>[<br/>  "name",<br/>  "environment"<br/>]</pre> | no |
+| <a name="input_lb_size"></a> [lb\_size](#input\_lb\_size) | The size of the Load Balancer. It must be either lb-small, lb-medium, or lb-large. Defaults to lb-small. Only one of size or size\_unit may be provided. | `string` | `"lb-small"` | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'terraform-do-modules' or 'hello@clouddrove.com' | `string` | `"terraform-do-modules"` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
+| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the project that the load balancer is associated with. If no ID is provided at creation, the load balancer associates with the user's default project. | `string` | `null` | no |
+| <a name="input_region"></a> [region](#input\_region) | The region to create VPC, like `london-1` , `bangalore-1` ,`newyork-3` `toronto-1`. | `string` | `"blr-1"` | no |
+| <a name="input_size_unit"></a> [size\_unit](#input\_size\_unit) | The size of the Load Balancer. It must be in the range (1, 100). Defaults to 1. Only one of size or size\_unit may be provided. | `number` | `1` | no |
+| <a name="input_sticky_sessions"></a> [sticky\_sessions](#input\_sticky\_sessions) | Input value for `sticky_sessions` used by this module. | `list(any)` | `[]` | no |
+| <a name="input_vpc_uuid"></a> [vpc\_uuid](#input\_vpc\_uuid) | The ID of the VPC where the load balancer will be located. | `string` | `""` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_id"></a> [id](#output\_id) | The ID of the Load Balancer. |
+| <a name="output_ip"></a> [ip](#output\_ip) | The ip of the Load Balancer. |
+| <a name="output_urn"></a> [urn](#output\_urn) | The uniform resource name for the Load Balancer. |
+<!-- END_TF_DOCS -->
