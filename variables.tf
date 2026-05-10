@@ -117,7 +117,7 @@ variable "healthcheck" {
 variable "sticky_sessions" {
   type        = list(any)
   default     = []
-  description = "List of objects that represent the configuration of each healthcheck."
+  description = "Input value for `sticky_sessions` used by this module."
 }
 
 variable "firewall" {
