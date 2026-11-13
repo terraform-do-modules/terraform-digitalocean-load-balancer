@@ -2,7 +2,6 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| algorithm | The load balancing algorithm used to determine which backend Droplet will be selected by a client. It must be either round\_robin or least\_connections. The default value is round\_robin. | `string` | `"round_robin"` | no |
 | disable\_lets\_encrypt\_dns\_records | A boolean value indicating whether to disable automatic DNS record creation for Let's Encrypt certificates that are added to the load balancer. Default value is false. | `bool` | `false` | no |
 | droplet\_ids | A list of the IDs of each droplet to be attached to the Load Balancer. | `list(string)` | `[]` | no |
 | droplet\_tag | The name of a Droplet tag corresponding to Droplets to be assigned to the Load Balancer. | `string` | `null` | no |
